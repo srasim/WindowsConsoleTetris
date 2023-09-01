@@ -1,6 +1,7 @@
 #include <iostream>
 #include <Windows.h>
 #include <thread>
+#include "InputHandler.h"
 
 int nScreenWidth = 80;
 int nScreenHeight = 30;
@@ -130,6 +131,27 @@ int main() {
             nCurrentPosY++;
             nForceDownCounter = 0;
         }
+
+        if (InputHandler::GetInstance()->GetKeyDown(VK_DOWN))
+        {
+            nCurrentPosY++;
+        }
+
+        if (InputHandler::GetInstance()->GetKeyDown(VK_LEFT))
+        {
+            nCurrentPosX--;
+        }
+
+        if (InputHandler::GetInstance()->GetKeyDown(VK_RIGHT))
+        {
+            nCurrentPosX++;
+        }
+
+        if (InputHandler::GetInstance()->GetKeyDown('R'))
+        {
+            nCurrentRotation++;
+        }
+
 
         //DRAW PLAY FIELD
         for (int x = 0; x < nPlayFieldWidth; x++)
