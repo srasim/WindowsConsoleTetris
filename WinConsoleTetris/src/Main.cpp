@@ -56,11 +56,11 @@ void LogStartInfo(char* screen, HANDLE hBuffer, DWORD dwBytesWritten)
 {
     sprintf_s(&screen[3 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2)], 12, "WELCOME !!!");
 
-    sprintf_s(&screen[6 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2) ] ,     11, "INPUT INFO");
-    sprintf_s(&screen[8 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2) -3] ,   15, "ROTATE     : R");
-    sprintf_s(&screen[9 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2) - 2] ,  24, "MOVE DOWN  : DOWN ARROW");
-    sprintf_s(&screen[10 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2) -1]  , 24, "MOVE LEFT  : LEFT ARROW");
-    sprintf_s(&screen[11 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2) ],     25, "MOVE RIGHT : RIGHT ARROW");
+    sprintf_s(&screen[6 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2) ]   , 11,   "INPUT INFO");
+    sprintf_s(&screen[8 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2) -3] , 15,   "ROTATE     : R");
+    sprintf_s(&screen[9 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2) -3] , 24,   "MOVE DOWN  : DOWN ARROW");
+    sprintf_s(&screen[10 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2) -3], 24,   "MOVE LEFT  : LEFT ARROW");
+    sprintf_s(&screen[11 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2) -3], 25,   "MOVE RIGHT : RIGHT ARROW");
 
     WriteConsoleOutputCharacterA(hBuffer, screen, nScreenWidth * nScreenHeight, { 0,0 }, &dwBytesWritten);//Display
 }
