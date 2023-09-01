@@ -4,8 +4,8 @@
 #include "InputHandler.h"
 #include <vector>
 
-int nScreenWidth = 80;
-int nScreenHeight = 30;
+int nScreenWidth = 160;
+int nScreenHeight = 60;
 
 int nPlayFieldWidth = 12;
 int nPlayFieldHeight = 18;
@@ -116,16 +116,27 @@ int main() {
     tetrominos[6].append("..X.");
 #pragma endregion
 
+    wchar_t consoleTitle[7] = L"Tetris";
+    HANDLE hBuffer = GetStdHandle(STD_OUTPUT_HANDLE); 
+    SMALL_RECT rectWindow = { 0, 0, 1, 1 };
+    SetConsoleWindowInfo(hBuffer, TRUE, &rectWindow);
+
+    COORD bufferSize = { (short)nScreenWidth, (short)nScreenHeight };
+    SetConsoleScreenBufferSize(hBuffer, bufferSize);
+
+    SetConsoleActiveScreenBuffer(hBuffer);
+ 
+    
+    rectWindow = { 0, 0, (short)nScreenWidth - 1, (short)nScreenHeight - 1 };
+    SetConsoleWindowInfo(hBuffer, TRUE, &rectWindow);
+
     char* screen = new char[nScreenWidth * nScreenHeight];
 
+    memset(screen, 0, sizeof(char) * nScreenWidth * nScreenHeight);
+    SetConsoleTitle(consoleTitle);
+    
     ClearScreen(screen);
   
-    HANDLE hBuffer = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL); //Create screen buffer
-    SetConsoleActiveScreenBuffer(hBuffer); //Make created buffer active buffer
-
-    COORD bufferSize = { nScreenWidth,nScreenHeight };
-    SetConsoleScreenBufferSize(hBuffer, bufferSize); // Set screeen buffer size
-
 
     pPlayField = new unsigned char[nPlayFieldWidth * nPlayFieldHeight]; // Create play field buffer
 
@@ -355,5 +366,6 @@ int main() {
         
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
+    CloseHandle(hBuffer);
     return 0;
 }
