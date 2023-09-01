@@ -7,9 +7,28 @@ int nScreenHeight = 30;
 int nPlayFieldWidth = 12;
 int nPlayFieldHeight = 18;
 
+int nTetrominoWidth = 4;
+int nTetrominoHeight = 4;
+
 unsigned char* pPlayField = nullptr; //For play field buffer
 
 std::string tetrominos[7]; //For tetrominos (assets)
+
+int GetRotatedIndex(int px, int py, int r) { //Returns the rotated index of element in a tetromino
+    //Rotation and indexing logic
+    r %= 4;
+    //r represents count of "90 degree clockwise rotation"
+    //if r = 2 that means func returns the index of the 180 degree clockwise rotated tetromino element
+    while (r > 0)
+    {
+        int temp = py;
+        py = nTetrominoWidth - px - 1;
+        px = temp;
+        r--;
+    }
+
+    return py * nTetrominoWidth + px;
+}
 
 int main() {
 
