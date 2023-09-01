@@ -52,6 +52,27 @@ bool DoesTetrominoCollide(int nTetromino, int nRotation, int nCurrentPosX, int n
     return false;
 }
 
+void LogStartInfo(char* screen, HANDLE hBuffer, DWORD dwBytesWritten)
+{
+    sprintf_s(&screen[3 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2)], 12, "WELCOME !!!");
+
+    sprintf_s(&screen[6 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2) ] ,     11, "INPUT INFO");
+    sprintf_s(&screen[8 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2) -3] ,   15, "ROTATE     : R");
+    sprintf_s(&screen[9 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2) - 2] ,  24, "MOVE DOWN  : DOWN ARROW");
+    sprintf_s(&screen[10 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2) -1]  , 24, "MOVE LEFT  : LEFT ARROW");
+    sprintf_s(&screen[11 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2) ],     25, "MOVE RIGHT : RIGHT ARROW");
+
+    WriteConsoleOutputCharacterA(hBuffer, screen, nScreenWidth * nScreenHeight, { 0,0 }, &dwBytesWritten);//Display
+}
+
+void ClearScreen(char* screen)
+{
+    for (int i = 0; i < nScreenHeight * nScreenWidth; i++)
+    {
+        screen[i] = ' ';
+    }
+}
+
 
 int main() {
 
@@ -97,10 +118,8 @@ int main() {
 
     char* screen = new char[nScreenWidth * nScreenHeight];
 
-    for (int i = 0; i < nScreenHeight * nScreenWidth; i++)
-    {
-        screen[i] = ' ';
-    }
+    ClearScreen(screen);
+  
     HANDLE hBuffer = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL); //Create screen buffer
     SetConsoleActiveScreenBuffer(hBuffer); //Make created buffer active buffer
 
@@ -143,6 +162,20 @@ int main() {
     int nLockedTetrominoCount = 0;
     int nScore = 0; // Gain 25 points for every locked tetromino
 
+    LogStartInfo(screen, hBuffer, dwBytesWritten); 
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+    ClearScreen(screen);
+
+    //DRAW PLAY FIELD WITH ANIM
+    for (int y = 0; y < nPlayFieldHeight; y++)
+    {
+        for (int x= 0; x < nPlayFieldWidth; x++)
+        {
+            screen[(y + nPlayFieldOffsetY) * nScreenWidth + x + nPlayFieldOffsetX] = " #X="[pPlayField[y * nPlayFieldWidth + x]];
+            WriteConsoleOutputCharacterA(hBuffer, screen, nScreenWidth * nScreenHeight, { 0,0 }, &dwBytesWritten);//Display
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(30));
+    }
 
     while (!bIsGameOver)
     {
@@ -298,6 +331,7 @@ int main() {
         WriteConsoleOutputCharacterA(hBuffer, screen, nScreenWidth * nScreenHeight, { 0,0 }, &dwBytesWritten);//Display
     }
     
+ 
     int row;
     int index;
 
