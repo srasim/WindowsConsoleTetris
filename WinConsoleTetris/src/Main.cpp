@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <thread>
 #include "InputHandler.h"
+#include <vector>
 
 int nScreenWidth = 80;
 int nScreenHeight = 30;
@@ -137,6 +138,8 @@ int main() {
     int nForceDownCounter = 0;
     int nForceDownThreshold = 20;
 
+    std::vector<int> vLines;
+
 
     while (!bIsGameOver)
     {
@@ -207,8 +210,10 @@ int main() {
                             {
                                 //Remove line and set 3 to display as '='
                                 pPlayField[(nCurrentPosY + py) * nPlayFieldWidth + px] = 3;
-
                             }
+
+                            //Add detected line to vector
+                            vLines.push_back(nCurrentPosY + py);
                         }
                     }
                 }
@@ -240,6 +245,29 @@ int main() {
                     screen[(nCurrentPosY + nPlayFieldOffsetY + py) * nScreenWidth + nCurrentPosX + px] = 'X';
                 }
             }
+        }
+
+        if (!vLines.empty())
+        {
+            //Display frame with delay to show lines
+            WriteConsoleOutputCharacterA(hBuffer, screen, nScreenWidth * nScreenHeight, { 0,0 }, &dwBytesWritten);//Display
+            std::this_thread::sleep_for(std::chrono::milliseconds(400)); //400 ms delay
+
+            for (auto& l : vLines)
+            {
+                for (int x = 1; x < nPlayFieldWidth - 1; x++) //Do not change boundaries X
+                {
+                    for (int y = l; y > 0; y--)
+                    {
+                        //Shift rows
+                        pPlayField[y * nPlayFieldWidth + x] = pPlayField[(y - 1) * nPlayFieldWidth + x];
+                    }
+
+                    pPlayField[x] = 0; //Set first row empty
+                }
+            }
+            //clear lines vector
+            vLines.clear();
         }
 
         WriteConsoleOutputCharacterA(hBuffer, screen, nScreenWidth * nScreenHeight, { 0,0 }, &dwBytesWritten);//Display
