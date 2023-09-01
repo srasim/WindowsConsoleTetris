@@ -72,8 +72,8 @@ int main() {
     tetrominos[6].append("..X.");
 #pragma endregion
 
-   
     char* screen = new char[nScreenWidth * nScreenHeight];
+
     for (int i = 0; i < nScreenHeight * nScreenWidth; i++)
     {
         screen[i] = ' ';
@@ -102,22 +102,42 @@ int main() {
         }
     }
 
-    //Set screen 
-    for (int x = 0; x < nPlayFieldWidth; x++)
-    {
-        for (int y = 0; y < nPlayFieldHeight; y++)
-        {
-            screen[y * nScreenWidth + x] = " #X="[pPlayField[y * nPlayFieldWidth + x]]; // Set boundary elements as '#"
-        }
-    }
-
     DWORD dwBytesWritten = 0;
+    int nPLayFieldOffsetX = nScreenWidth / 2 - (nPlayFieldWidth / 2);
+    bool bIsGameOver = false;
+    int nCurrentPieceIndex = 1;
+    int nCurrentRotation = 0;
+    int nCurrentPosX = nScreenWidth / 2;
+    int nCurrentPosY = 0;
 
-    WriteConsoleOutputCharacterA(hBuffer, screen, nScreenWidth * nScreenHeight, { 0,0 }, &dwBytesWritten); //Display frame
-    while (true)
+    while (!bIsGameOver)
     {
+
+        //DRAW PLAY FIELD
+        for (int x = 0; x < nPlayFieldWidth; x++)
+        {
+            for (int y = 0; y < nPlayFieldHeight; y++)
+            {
+                screen[(y + 5) * nScreenWidth + x + nPLayFieldOffsetX] = " #X="[pPlayField[y * nPlayFieldWidth + x]]; // Set boundary elements as '#"
+            }
+        }
+
+        //DRAW CURRENT PIECE
+        for (int px = 0; px < nTetrominoWidth; px++)
+        {
+            for (int py = 0; py < nTetrominoHeight; py++)
+            {
+                if (tetrominos[nCurrentPieceIndex][GetRotatedIndex(px, py, nCurrentRotation)] == 'X')
+                {
+                    screen[(nCurrentPosY + 5 + py) * nScreenWidth + nCurrentPosX + px] = 'X';
+                }
+            }
+        }
+
+
         WriteConsoleOutputCharacterA(hBuffer, screen, nScreenWidth * nScreenHeight, { 0,0 }, &dwBytesWritten);//Display
     }
+  
 
     return 0;
 }
