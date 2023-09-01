@@ -32,6 +32,26 @@ int GetRotatedIndex(int px, int py, int r) { //Returns the rotated index of elem
     return py * nTetrominoWidth + px;
 }
 
+bool DoesTetrominoCollide(int nTetromino, int nRotation, int nCurrentPosX, int nCurrentPosY) //Collision detection
+{
+    for (int px = 0; px < nTetrominoWidth; px++)
+    {
+        for (int py = 0; py < nTetrominoHeight; py++)
+        {
+            int pi = GetRotatedIndex(px, py, nRotation);
+
+            int fi = (nCurrentPosY + py) * nPlayFieldWidth + (nCurrentPosX + px);
+
+            if (tetrominos[nTetromino][pi] == 'X' && pPlayField[fi] != 0)
+            {
+                return true; // Collision detected
+            }
+        }
+    }
+    return false;
+}
+
+
 int main() {
 
 #pragma region Assets
@@ -105,8 +125,8 @@ int main() {
     }
 
     DWORD dwBytesWritten = 0;
-    int nPLayFieldOffsetX = nScreenWidth / 2 - (nPlayFieldWidth / 2);
-    int nPLayFieldOffsetY = 5;
+    int nPlayFieldOffsetX = nScreenWidth / 2 - (nPlayFieldWidth / 2);
+    int nPlayFieldOffsetY = 5;
     bool bIsGameOver = false;
     int nCurrentTetrominoIndex = 1;
     int nCurrentRotation = 0;
@@ -128,37 +148,41 @@ int main() {
 
         if (bForceDown)
         {
-            nCurrentPosY++;
+            if (!DoesTetrominoCollide(nCurrentTetrominoIndex, nCurrentRotation, nCurrentPosX - nPlayFieldOffsetX, nCurrentPosY + 1))
+            {
+                nCurrentPosY++;
+            }
+
             nForceDownCounter = 0;
         }
 
-        if (InputHandler::GetInstance()->GetKeyDown(VK_DOWN))
+#pragma region Input
+        if (InputHandler::GetInstance()->GetKeyDown(VK_DOWN) && !DoesTetrominoCollide(nCurrentTetrominoIndex, nCurrentRotation, nCurrentPosX - nPlayFieldOffsetX, nCurrentPosY + 1))
         {
             nCurrentPosY++;
         }
 
-        if (InputHandler::GetInstance()->GetKeyDown(VK_LEFT))
+        if (InputHandler::GetInstance()->GetKeyDown(VK_LEFT) && !DoesTetrominoCollide(nCurrentTetrominoIndex, nCurrentRotation, nCurrentPosX - nPlayFieldOffsetX - 1, nCurrentPosY))
         {
             nCurrentPosX--;
         }
 
-        if (InputHandler::GetInstance()->GetKeyDown(VK_RIGHT))
+        if (InputHandler::GetInstance()->GetKeyDown(VK_RIGHT) && !DoesTetrominoCollide(nCurrentTetrominoIndex, nCurrentRotation, nCurrentPosX - nPlayFieldOffsetX + 1, nCurrentPosY))
         {
             nCurrentPosX++;
         }
 
-        if (InputHandler::GetInstance()->GetKeyDown('R'))
+        if (InputHandler::GetInstance()->GetKeyDown('R') && !DoesTetrominoCollide(nCurrentTetrominoIndex, nCurrentRotation + 1, nCurrentPosX - nPlayFieldOffsetX, nCurrentPosY))
         {
             nCurrentRotation++;
         }
-
-
+#pragma endregion
         //DRAW PLAY FIELD
         for (int x = 0; x < nPlayFieldWidth; x++)
         {
             for (int y = 0; y < nPlayFieldHeight; y++)
             {
-                screen[(y + nPLayFieldOffsetY) * nScreenWidth + x + nPLayFieldOffsetX] = " #X="[pPlayField[y * nPlayFieldWidth + x]]; // Set boundary elements as '#"
+                screen[(y + nPlayFieldOffsetY) * nScreenWidth + x + nPlayFieldOffsetX] = " #X="[pPlayField[y * nPlayFieldWidth + x]]; // Set boundary elements as '#"
             }
         }
 
@@ -169,7 +193,7 @@ int main() {
             {
                 if (tetrominos[nCurrentTetrominoIndex][GetRotatedIndex(px, py, nCurrentRotation)] == 'X')
                 {
-                    screen[(nCurrentPosY + nPLayFieldOffsetY + py) * nScreenWidth + nCurrentPosX + px] = 'X';
+                    screen[(nCurrentPosY + nPlayFieldOffsetY + py) * nScreenWidth + nCurrentPosX + px] = 'X';
                 }
             }
         }
