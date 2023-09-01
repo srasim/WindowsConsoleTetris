@@ -9,7 +9,6 @@ public:
 		return s_Instance = (s_Instance != nullptr) ? s_Instance : new InputHandler();
 	}
 
-	void GiveInfo();
 	bool GetKeyDown(int vKey);
 
 private:

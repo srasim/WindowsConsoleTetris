@@ -23,13 +23,3 @@ bool InputHandler::GetKeyDown(int vKey)
     return (0x8000 & GetAsyncKeyState(vKey));
     
 }
-
-void InputHandler::GiveInfo()
-{
-    std::cout << "______INPUT INFO_____" << std::endl;
-    std::cout << "MOVE LEFT  : LEFT ARROW" << std::endl;
-    std::cout << "MOVE RIGHT : RIGHT ARROW" << std::endl;
-    std::cout << "MOVE DOWN  : DOWN ARROW" << std::endl;
-    std::cout << "ROTATE     : R" << std::endl;
-    std::cout << "GOOD LUCK !!!" << std::endl;
-}
