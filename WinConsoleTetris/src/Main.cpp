@@ -146,16 +146,6 @@ int main() {
         nForceDownCounter++;
         bForceDown = (nForceDownCounter == nForceDownThreshold);
 
-        if (bForceDown)
-        {
-            if (!DoesTetrominoCollide(nCurrentTetrominoIndex, nCurrentRotation, nCurrentPosX - nPlayFieldOffsetX, nCurrentPosY + 1))
-            {
-                nCurrentPosY++;
-            }
-
-            nForceDownCounter = 0;
-        }
-
 #pragma region Input
         if (InputHandler::GetInstance()->GetKeyDown(VK_DOWN) && !DoesTetrominoCollide(nCurrentTetrominoIndex, nCurrentRotation, nCurrentPosX - nPlayFieldOffsetX, nCurrentPosY + 1))
         {
@@ -177,6 +167,60 @@ int main() {
             nCurrentRotation++;
         }
 #pragma endregion
+
+        if (bForceDown)
+        {
+            if (!DoesTetrominoCollide(nCurrentTetrominoIndex, nCurrentRotation, nCurrentPosX - nPlayFieldOffsetX, nCurrentPosY + 1))
+            {
+                nCurrentPosY++;
+            }
+
+            else //Cant move anymore. Lock tetromino
+            {
+                for (int px = 0; px < nTetrominoWidth; px++)
+                {
+                    for (int py = 0; py < nTetrominoHeight; py++)
+                    {
+                        if (tetrominos[nCurrentTetrominoIndex][GetRotatedIndex(px, py, nCurrentRotation)] == 'X')
+                        {
+                            pPlayField[(py + nCurrentPosY) * nPlayFieldWidth + nCurrentPosX - nPlayFieldOffsetX + px] = 2;
+                        }
+                    }
+                }
+
+                //Check lines
+                for (int py = 0; py < nTetrominoHeight; py++) // Check last tetmonio rows
+                {
+                    if (nCurrentPosY + py < nPlayFieldHeight - 1) // Do not check boundaries Y
+                    {
+                        bool bHasLine = true;
+
+                        for (int px = 1; px < nPlayFieldWidth - 1; px++) // Do not check boundaries X
+                        {
+                            //If any space return false       
+                            bHasLine &= (pPlayField[(nCurrentPosY + py) * nPlayFieldWidth + px]) != 0;
+                        }
+
+                        if (bHasLine) // Line detected
+                        {
+                            for (int px = 1; px < nPlayFieldWidth - 1; px++)
+                            {
+                                //Remove line and set 3 to display as '='
+                                pPlayField[(nCurrentPosY + py) * nPlayFieldWidth + px] = 3;
+
+                            }
+                        }
+                    }
+                }
+                //Set new tetromino
+                nCurrentPosX = (nScreenWidth - 2) / 2;
+                nCurrentPosY = 0;
+                nCurrentTetrominoIndex = rand() % 7;
+            }
+
+            nForceDownCounter = 0;
+        }
+
         //DRAW PLAY FIELD
         for (int x = 0; x < nPlayFieldWidth; x++)
         {
