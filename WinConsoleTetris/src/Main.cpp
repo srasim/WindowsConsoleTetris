@@ -297,7 +297,28 @@ int main() {
 
         WriteConsoleOutputCharacterA(hBuffer, screen, nScreenWidth * nScreenHeight, { 0,0 }, &dwBytesWritten);//Display
     }
-  
+    
+    int row;
+    int index;
+
+    for (int i = 0; i < nPlayFieldHeight; i++)
+    {
+        row = (nPlayFieldOffsetY + i) * nScreenWidth;
+
+        for (int j = 0; j < nPlayFieldWidth; j++)
+        {
+            index = row + nPlayFieldOffsetX + j;
+
+            screen[index] = ' ';
+            WriteConsoleOutputCharacterA(hBuffer, screen, nScreenWidth * nScreenHeight, { 0,0 }, &dwBytesWritten);//Display
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
+
+    sprintf_s(&screen[5 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2) + 1], 14,"GAME OVER !!!");
+    WriteConsoleOutputCharacterA(hBuffer, screen, nScreenWidth* nScreenHeight, { 0,0 }, & dwBytesWritten);//Display
+        
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     return 0;
 }
