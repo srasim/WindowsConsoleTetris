@@ -272,6 +272,7 @@ int main() {
                 nCurrentPosX = (nScreenWidth - 2) / 2;
                 nCurrentPosY = 0;
                 nCurrentTetrominoIndex = rand() % 7;
+                nCurrentRotation = 0;
 
                 //If next piece collides game over
                 bIsGameOver = DoesTetrominoCollide(nCurrentTetrominoIndex, nCurrentRotation, nCurrentPosX - nPlayFieldOffsetX, nCurrentPosY);
