@@ -104,10 +104,11 @@ int main() {
 
     DWORD dwBytesWritten = 0;
     int nPLayFieldOffsetX = nScreenWidth / 2 - (nPlayFieldWidth / 2);
+    int nPLayFieldOffsetY = 5;
     bool bIsGameOver = false;
     int nCurrentPieceIndex = 1;
     int nCurrentRotation = 0;
-    int nCurrentPosX = nScreenWidth / 2;
+    int nCurrentPosX = (nScreenWidth - 2) / 2;
     int nCurrentPosY = 0;
 
     while (!bIsGameOver)
@@ -118,7 +119,7 @@ int main() {
         {
             for (int y = 0; y < nPlayFieldHeight; y++)
             {
-                screen[(y + 5) * nScreenWidth + x + nPLayFieldOffsetX] = " #X="[pPlayField[y * nPlayFieldWidth + x]]; // Set boundary elements as '#"
+                screen[(y + nPLayFieldOffsetY) * nScreenWidth + x + nPLayFieldOffsetX] = " #X="[pPlayField[y * nPlayFieldWidth + x]]; // Set boundary elements as '#"
             }
         }
 
@@ -129,11 +130,10 @@ int main() {
             {
                 if (tetrominos[nCurrentPieceIndex][GetRotatedIndex(px, py, nCurrentRotation)] == 'X')
                 {
-                    screen[(nCurrentPosY + 5 + py) * nScreenWidth + nCurrentPosX + px] = 'X';
+                    screen[(nCurrentPosY + nPLayFieldOffsetY + py) * nScreenWidth + nCurrentPosX + px] = 'X';
                 }
             }
         }
-
 
         WriteConsoleOutputCharacterA(hBuffer, screen, nScreenWidth * nScreenHeight, { 0,0 }, &dwBytesWritten);//Display
     }
