@@ -1,5 +1,6 @@
 #include <iostream>
 #include <Windows.h>
+#include <thread>
 
 int nScreenWidth = 80;
 int nScreenHeight = 30;
@@ -106,13 +107,29 @@ int main() {
     int nPLayFieldOffsetX = nScreenWidth / 2 - (nPlayFieldWidth / 2);
     int nPLayFieldOffsetY = 5;
     bool bIsGameOver = false;
-    int nCurrentPieceIndex = 1;
+    int nCurrentTetrominoIndex = 1;
     int nCurrentRotation = 0;
     int nCurrentPosX = (nScreenWidth - 2) / 2;
     int nCurrentPosY = 0;
 
+    int bForceDown = false;
+    int nForceDownCounter = 0;
+    int nForceDownThreshold = 20;
+
+
     while (!bIsGameOver)
     {
+        //GAME TIMING
+        std::this_thread::sleep_for(std::chrono::milliseconds(50)); //Game tick
+
+        nForceDownCounter++;
+        bForceDown = (nForceDownCounter == nForceDownThreshold);
+
+        if (bForceDown)
+        {
+            nCurrentPosY++;
+            nForceDownCounter = 0;
+        }
 
         //DRAW PLAY FIELD
         for (int x = 0; x < nPlayFieldWidth; x++)
@@ -128,7 +145,7 @@ int main() {
         {
             for (int py = 0; py < nTetrominoHeight; py++)
             {
-                if (tetrominos[nCurrentPieceIndex][GetRotatedIndex(px, py, nCurrentRotation)] == 'X')
+                if (tetrominos[nCurrentTetrominoIndex][GetRotatedIndex(px, py, nCurrentRotation)] == 'X')
                 {
                     screen[(nCurrentPosY + nPLayFieldOffsetY + py) * nScreenWidth + nCurrentPosX + px] = 'X';
                 }
