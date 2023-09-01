@@ -9,8 +9,51 @@ int nPlayFieldHeight = 18;
 
 unsigned char* pPlayField = nullptr; //For play field buffer
 
+std::string tetrominos[7]; //For tetrominos (assets)
+
 int main() {
 
+#pragma region Assets
+
+    //Every tetromino is a string that has 4*4 elements
+   // 'X' defines the shape
+    tetrominos[0].append("..X.");
+    tetrominos[0].append("..X.");
+    tetrominos[0].append("..X.");
+    tetrominos[0].append("..X.");
+
+    tetrominos[1].append("..X.");
+    tetrominos[1].append(".XX.");
+    tetrominos[1].append(".X..");
+    tetrominos[1].append("....");
+
+    tetrominos[2].append(".X..");
+    tetrominos[2].append(".XX.");
+    tetrominos[2].append("..X.");
+    tetrominos[2].append("....");
+
+    tetrominos[3].append("....");
+    tetrominos[3].append(".XX.");
+    tetrominos[3].append(".XX.");
+    tetrominos[3].append("....");
+
+    tetrominos[4].append("..X.");
+    tetrominos[4].append(".XX.");
+    tetrominos[4].append("..X.");
+    tetrominos[4].append("....");
+
+    tetrominos[5].append("....");
+    tetrominos[5].append(".XX.");
+    tetrominos[5].append("..X.");
+    tetrominos[5].append("..X.");
+
+    tetrominos[6].append("..X.");
+    tetrominos[6].append("..X.");
+    tetrominos[6].append("..X.");
+    tetrominos[6].append("..X.");
+#pragma endregion
+
+   
     char* screen = new char[nScreenWidth * nScreenHeight];
     for (int i = 0; i < nScreenHeight * nScreenWidth; i++)
     {
