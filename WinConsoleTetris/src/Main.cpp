@@ -140,6 +140,9 @@ int main() {
 
     std::vector<int> vLines;
 
+    int nLockedTetrominoCount = 0;
+    int nScore = 0; // Gain 25 points for every locked tetromino
+
 
     while (!bIsGameOver)
     {
@@ -191,6 +194,18 @@ int main() {
                     }
                 }
 
+                nLockedTetrominoCount++;
+                nScore += 25; //Gain 25 points for every locked tetromino
+
+                //After every 10 locked tetromino increase speed
+                if (nLockedTetrominoCount % 10 == 0)
+                {
+                    if (nForceDownThreshold >= 10)
+                    {
+                        nForceDownThreshold--;
+                    }
+                }
+
                 //Check lines
                 for (int py = 0; py < nTetrominoHeight; py++) // Check last tetmonio rows
                 {
@@ -217,6 +232,9 @@ int main() {
                         }
                     }
                 }
+
+                nScore += vLines.size() * 100; //Gain 100 points for every line
+
                 //Set new tetromino
                 nCurrentPosX = (nScreenWidth - 2) / 2;
                 nCurrentPosY = 0;
@@ -269,6 +287,9 @@ int main() {
             //clear lines vector
             vLines.clear();
         }
+
+        //Draw Score
+        sprintf_s(&screen[2 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2)], 13, "SCORE: %5d", nScore);
 
         WriteConsoleOutputCharacterA(hBuffer, screen, nScreenWidth * nScreenHeight, { 0,0 }, &dwBytesWritten);//Display
     }
