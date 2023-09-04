@@ -4,8 +4,8 @@
 #include "InputHandler.h"
 #include <vector>
 
-int nScreenWidth = 160;
-int nScreenHeight = 60;
+int nScreenWidth = 80;
+int nScreenHeight = 30;
 
 int nPlayFieldWidth = 12;
 int nPlayFieldHeight = 18;
