@@ -157,7 +157,7 @@ int main() {
 
     DWORD dwBytesWritten = 0;
     int nPlayFieldOffsetX = nScreenWidth / 2 - (nPlayFieldWidth / 2);
-    int nPlayFieldOffsetY = 5;
+    int nPlayFieldOffsetY = nScreenHeight /2 - (nPlayFieldHeight / 2);
     bool bIsGameOver = false;
     int nCurrentTetrominoIndex = 1;
     int nCurrentRotation = 0;
@@ -338,7 +338,7 @@ int main() {
         }
 
         //Draw Score
-        sprintf_s(&screen[2 * nScreenWidth + ((nScreenWidth - 2) / 2 - nPlayFieldWidth / 2)], 13, "SCORE: %5d", nScore);
+        sprintf_s(&screen[(nPlayFieldOffsetY - 5)  * nScreenWidth + nPlayFieldOffsetX], 13, "SCORE: %5d", nScore);
 
         WriteConsoleOutputCharacterA(hBuffer, screen, nScreenWidth * nScreenHeight, { 0,0 }, &dwBytesWritten);//Display
     }
