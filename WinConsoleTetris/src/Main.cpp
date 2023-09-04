@@ -110,10 +110,10 @@ int main() {
     tetrominos[5].append("..X.");
     tetrominos[5].append("..X.");
 
-    tetrominos[6].append("..X.");
-    tetrominos[6].append("..X.");
-    tetrominos[6].append("..X.");
-    tetrominos[6].append("..X.");
+    tetrominos[6].append("....");
+    tetrominos[6].append(".XX.");
+    tetrominos[6].append(".X..");
+    tetrominos[6].append(".X..");
 #pragma endregion
 
     wchar_t consoleTitle[7] = L"Tetris";
