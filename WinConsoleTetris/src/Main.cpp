@@ -13,9 +13,11 @@ int nPlayFieldHeight = 18;
 int nTetrominoWidth = 4;
 int nTetrominoHeight = 4;
 
+const int nDiffTetrominoCount = 10;
+
 unsigned char* pPlayField = nullptr; //For play field buffer
 
-std::string tetrominos[7]; //For tetrominos (assets)
+std::string tetrominos[nDiffTetrominoCount]; //For tetrominos (assets)
 
 int GetRotatedIndex(int px, int py, int r) { //Returns the rotated index of element in a tetromino
     //Rotation and indexing logic
@@ -114,6 +116,22 @@ int main() {
     tetrominos[6].append(".XX.");
     tetrominos[6].append(".X..");
     tetrominos[6].append(".X..");
+
+    tetrominos[7].append("....");
+    tetrominos[7].append("X.X.");
+    tetrominos[7].append("XXX.");
+    tetrominos[7].append("....");
+
+    tetrominos[8].append("....");
+    tetrominos[8].append("....");
+    tetrominos[8].append(".X..");
+    tetrominos[8].append("XXXX");
+
+    tetrominos[9].append("..X.");
+    tetrominos[9].append("XXX.");
+    tetrominos[9].append(".X..");
+    tetrominos[9].append("....");
+
 #pragma endregion
 
     wchar_t consoleTitle[7] = L"Tetris";
@@ -159,7 +177,7 @@ int main() {
     int nPlayFieldOffsetX = nScreenWidth / 2 - (nPlayFieldWidth / 2);
     int nPlayFieldOffsetY = nScreenHeight /2 - (nPlayFieldHeight / 2);
     bool bIsGameOver = false;
-    int nCurrentTetrominoIndex = 1;
+    int nCurrentTetrominoIndex = rand() % nDiffTetrominoCount;
     int nCurrentRotation = 0;
     int nCurrentPosX = (nScreenWidth - 2) / 2;
     int nCurrentPosY = 0;
@@ -282,7 +300,7 @@ int main() {
                 //Set new tetromino
                 nCurrentPosX = (nScreenWidth - 2) / 2;
                 nCurrentPosY = 0;
-                nCurrentTetrominoIndex = rand() % 7;
+                nCurrentTetrominoIndex = rand() % nDiffTetrominoCount;
                 nCurrentRotation = 0;
 
                 //If next piece collides game over
