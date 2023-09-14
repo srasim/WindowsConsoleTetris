@@ -12,6 +12,6 @@ It provides a basic Tetris gaming experience where you can control tetrominos, c
 Believe it or not, there's even a 'welcome' screen and a 'game over' screen in the game.
 
 <div style="display: flex; justify-content: space-between;">
-    <img src="Screenshots/infoBeforeGameSS.png" width="500 height="395" alt="Welcome" />
-    <img src="Screenshots/gameOverSS.png" width="500" height="395" alt="In-Game" />
+    <img src="Screenshots/infoBeforeGameSS.png" width="400 height="316" alt="Welcome" />
+    <img src="Screenshots/gameOverSS.png" width="400" height="316" alt="In-Game" />
 </div>
