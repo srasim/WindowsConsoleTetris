@@ -26,7 +26,7 @@ To run the Tetris game on your Windows system, follow these steps:
 2. Open the project in Visual Studio or your preferred C++ IDE.
 3. Build and run the project.
 
-### Downloading and Playing
+### Downloading Release and Playing
 
 You can easily download and play the game by following these steps:
 
